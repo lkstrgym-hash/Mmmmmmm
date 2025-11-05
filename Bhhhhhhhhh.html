@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>چت روم ساده PHP</title>
+    <style>
+        /* کمی استایل دهی ساده */
+        #chat-box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px dotted #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>چت روم ساده</h2>
+
+    <div id="chat-box">
+        <?php
+            // فرض می‌کنیم فایل `messages.txt` را داریم و پیام‌ها را از آن می‌خوانیم
+            $messages_file = 'messages.txt';
+            if (file_exists($messages_file)) {
+                $messages = file_get_contents($messages_file);
+                // نمایش پیام‌ها به صورت برعکس (جدیدترین در پایین)
+                $lines = explode("\n", trim($messages));
+                $lines = array_reverse($lines);
+                foreach ($lines as $line) {
+                    if (!empty($line)) {
+                        echo "<div class='message'>" . htmlspecialchars($line) . "</div>";
+                    }
+                }
+            } else {
+                echo "<p>هنوز پیامی ارسال نشده است.</p>";
+            }
+        ?>
+    </div>
+
+    <form action="send_message.php" method="POST">
+        <input type="text" name="username" placeholder="نام شما" required>
+        <textarea name="message" placeholder="پیام شما" required></textarea>
+        <button type="submit">ارسال</button>
+    </form>
+    
+    <p>توجه: برای دیدن پیام‌های جدید، صفحه را رفرش کنید.</p>
+
+</body>
+</html>
